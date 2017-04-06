@@ -159,7 +159,9 @@ open class SideMenuTransition: UIPercentDrivenInteractiveTransition, UIViewContr
     }
 
     internal func hideMenuStart() {
-        NotificationCenter.default.removeObserver(self)
+        if observeAppEnterBackground {
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        }
         guard let sideMenuManager = sideMenuManager,
             let mainViewController = viewControllerForPresentedMenu,
             let menuView = presentDirection == .left ? sideMenuManager.menuLeftNavigationController?.view : sideMenuManager.menuRightNavigationController?.view else {return}
@@ -269,8 +271,15 @@ open class SideMenuTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         }
     }
 
+    internal var observeAppEnterBackground: Bool {
+        return false
+    }
+
     internal func presentMenuComplete() {
-        NotificationCenter.default.addObserver(self, selector:#selector(SideMenuTransition.applicationDidEnterBackgroundNotification), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        if observeAppEnterBackground {
+            NotificationCenter.default.addObserver(self, selector:#selector(SideMenuTransition.applicationDidEnterBackgroundNotification), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        }
+
         guard let sideMenuManager = sideMenuManager,
             let mainViewController = viewControllerForPresentedMenu else {
             return
