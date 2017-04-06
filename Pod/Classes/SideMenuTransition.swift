@@ -269,8 +269,15 @@ open class SideMenuTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         }
     }
 
+    internal var observeAppEnterBackground: Bool {
+        return false
+    }
+
     internal func presentMenuComplete() {
-        NotificationCenter.default.addObserver(self, selector:#selector(SideMenuTransition.applicationDidEnterBackgroundNotification), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        if observeAppEnterBackground {
+            NotificationCenter.default.addObserver(self, selector:#selector(SideMenuTransition.applicationDidEnterBackgroundNotification), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        }
+
         guard let sideMenuManager = sideMenuManager,
             let mainViewController = viewControllerForPresentedMenu else {
             return
