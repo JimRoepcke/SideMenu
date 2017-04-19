@@ -255,6 +255,13 @@ open class SideMenuManager: NSObject {
         }
     }
 
+    public func hideMenu() {
+        if menuRightNavigationController != nil || menuLeftNavigationController != nil {
+            sideMenuTransition.hideMenuStart()
+            sideMenuTransition.hideMenuComplete()
+        }
+    }
+
     /**
      Adds screen edge gestures to a view to present a menu.
      
