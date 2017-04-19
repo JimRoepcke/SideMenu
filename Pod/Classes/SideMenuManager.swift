@@ -255,10 +255,13 @@ open class SideMenuManager: NSObject {
         }
     }
 
+    /// This dismisses the currently presented view controller and hide the sideMenu.
     public func hideMenu() {
-        if menuRightNavigationController != nil || menuLeftNavigationController != nil {
+        if let menuViewController: UINavigationController = sideMenuTransition.presentDirection == .left ? menuLeftNavigationController : menuRightNavigationController,
+            menuViewController.presentedViewController == nil {
             sideMenuTransition.hideMenuStart()
             sideMenuTransition.hideMenuComplete()
+            menuViewController.dismiss(animated: false, completion: nil)
         }
     }
 
