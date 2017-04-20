@@ -484,3 +484,13 @@ open class SideMenuTransition: UIPercentDrivenInteractiveTransition, UIViewContr
     }
 
 }
+
+#if swift(>=3.1)
+
+#else
+fileprivate extension CGFloat {
+    static var ulpOfOne: CGFloat {
+        return CGFloat(FLT_EPSILON)
+    }
+}
+#endif
