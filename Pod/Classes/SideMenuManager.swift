@@ -255,6 +255,11 @@ open class SideMenuManager: NSObject {
         }
     }
 
+    /// This dismisses the currently presented view controller and hides the sideMenu.
+    public func hideMenu() {
+        sideMenuTransition.hideMenu()
+    }
+
     /**
      Adds screen edge gestures to a view to present a menu.
      

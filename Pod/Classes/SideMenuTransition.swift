@@ -472,6 +472,10 @@ open class SideMenuTransition: UIPercentDrivenInteractiveTransition, UIViewContr
     }
 
     internal func applicationDidEnterBackgroundNotification() {
+        hideMenu()
+    }
+
+    internal func hideMenu() {
         guard let sideMenuManager = sideMenuManager else {
             return
         }
