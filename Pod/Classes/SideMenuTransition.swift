@@ -114,7 +114,7 @@ open class SideMenuTransition: UIPercentDrivenInteractiveTransition, UIViewContr
             view.transform = transform
             if velocity >= 100 || velocity >= -50 && abs(distance) >= 0.5 {
                 // bug workaround: animation briefly resets after call to finishInteractiveTransition() but before animateTransition completion is called.
-                if ProcessInfo().operatingSystemVersion.majorVersion == 8 && percentComplete > 1 - CGFloat(FLT_EPSILON) {
+                if ProcessInfo().operatingSystemVersion.majorVersion == 8 && percentComplete > 1 - CGFloat.ulpOfOne {
                     update(0.9999)
                 }
                 finish()
@@ -144,7 +144,7 @@ open class SideMenuTransition: UIPercentDrivenInteractiveTransition, UIViewContr
             let velocity = pan.velocity(in: pan.view!).x * direction
             if velocity >= 100 || velocity >= -50 && distance >= 0.5 {
                 // bug workaround: animation briefly resets after call to finishInteractiveTransition() but before animateTransition completion is called.
-                if ProcessInfo().operatingSystemVersion.majorVersion == 8 && percentComplete > 1 - CGFloat(FLT_EPSILON) {
+                if ProcessInfo().operatingSystemVersion.majorVersion == 8 && percentComplete > 1 - CGFloat.ulpOfOne {
                     update(0.9999)
                 }
                 finish()
@@ -484,3 +484,13 @@ open class SideMenuTransition: UIPercentDrivenInteractiveTransition, UIViewContr
     }
 
 }
+
+#if swift(>=3.1)
+
+#else
+fileprivate extension CGFloat {
+    static var ulpOfOne: CGFloat {
+        return CGFloat(FLT_EPSILON)
+    }
+}
+#endif
