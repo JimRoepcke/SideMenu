@@ -48,16 +48,19 @@ open class SideMenuTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         return viewController
     }
 
+    @objc
     internal func handlePresentMenuLeftScreenEdge(_ edge: UIScreenEdgePanGestureRecognizer) {
         presentDirection = .left
         handlePresentMenuPan(edge)
     }
 
+    @objc
     internal func handlePresentMenuRightScreenEdge(_ edge: UIScreenEdgePanGestureRecognizer) {
         presentDirection = .right
         handlePresentMenuPan(edge)
     }
 
+    @objc
     internal func handlePresentMenuPan(_ pan: UIPanGestureRecognizer) {
         guard let sideMenuManager = sideMenuManager else {
             return
@@ -124,6 +127,7 @@ open class SideMenuTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         }
     }
 
+    @objc
     internal func handleHideMenuPan(_ pan: UIPanGestureRecognizer) {
         guard let sideMenuManager = sideMenuManager else {
             return
@@ -154,13 +158,14 @@ open class SideMenuTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         }
     }
 
+    @objc
     internal func handleHideMenuTap(_ tap: UITapGestureRecognizer) {
         viewControllerForPresentedMenu?.dismiss(animated: true, completion: nil)
     }
 
     internal func hideMenuStart() {
         if observeAppEnterBackground {
-            NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+            NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
         }
         guard let sideMenuManager = sideMenuManager,
             let mainViewController = viewControllerForPresentedMenu,
@@ -277,7 +282,7 @@ open class SideMenuTransition: UIPercentDrivenInteractiveTransition, UIViewContr
 
     internal func presentMenuComplete() {
         if observeAppEnterBackground {
-            NotificationCenter.default.addObserver(self, selector:#selector(SideMenuTransition.applicationDidEnterBackgroundNotification), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+            NotificationCenter.default.addObserver(self, selector:#selector(SideMenuTransition.applicationDidEnterBackgroundNotification), name: UIApplication.didEnterBackgroundNotification, object: nil)
         }
 
         guard let sideMenuManager = sideMenuManager,
@@ -382,7 +387,7 @@ open class SideMenuTransition: UIPercentDrivenInteractiveTransition, UIViewContr
 
         // perform the animation!
         let duration = transitionDuration(using: transitionContext)
-        let options: UIViewAnimationOptions = interactive ? .curveLinear : UIViewAnimationOptions()
+        let options: UIView.AnimationOptions = interactive ? .curveLinear : []
         UIView.animate(withDuration: duration, delay: 0, options: options, animations: { () -> Void in
             if self.presenting {
                 self.presentMenuStart(forSize: sideMenuManager.appScreenRect.size) // onstage items: slide in
@@ -422,7 +427,7 @@ open class SideMenuTransition: UIPercentDrivenInteractiveTransition, UIViewContr
                     container.insertSubview(topView!, at: 0)
                 }
                 if let statusBarView = self.statusBarView {
-                    container.bringSubview(toFront: statusBarView)
+                    container.bringSubviewToFront(statusBarView)
                 }
 
                 return
@@ -471,6 +476,7 @@ open class SideMenuTransition: UIPercentDrivenInteractiveTransition, UIViewContr
         return interactive ? self: nil
     }
 
+    @objc
     internal func applicationDidEnterBackgroundNotification() {
         hideMenu()
     }

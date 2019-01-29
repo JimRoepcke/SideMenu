@@ -40,7 +40,7 @@ open class UITableViewVibrantCell: UITableViewCell {
         guard let sideMenuManager = sideMenuManager else {
             return
         }
-        if !UIAccessibilityIsReduceTransparencyEnabled() && sideMenuManager.menuBlurEffectStyle != nil {
+        if !UIAccessibility.isReduceTransparencyEnabled && sideMenuManager.menuBlurEffectStyle != nil {
             let blurEffect = UIBlurEffect(style: sideMenuManager.menuBlurEffectStyle!)
             vibrancyView.effect = UIVibrancyEffect(blurEffect: blurEffect)
 
