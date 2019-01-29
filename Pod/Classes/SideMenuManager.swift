@@ -101,6 +101,7 @@ open class SideMenuManager: NSObject {
     open var menuParallaxStrength: Int = 0
 
     /// Draws the `menuAnimationBackgroundColor` behind the status bar. Default is true.
+    @objc
     open var menuFadeStatusBar = true
 
     /// When true, pushViewController called within the menu it will push the new view controller inside of the menu. Otherwise, it is pushed on the menu's presentingViewController. Default is false.
@@ -125,7 +126,7 @@ open class SideMenuManager: NSObject {
      
      - Note: If you want cells in a UITableViewController menu to show vibrancy, make them a subclass of UITableViewVibrantCell and set the cell's sideMenuManager property.
      */
-    open var menuBlurEffectStyle: UIBlurEffectStyle? {
+    open var menuBlurEffectStyle: UIBlurEffect.Style? {
         didSet {
             if oldValue != menuBlurEffectStyle {
                 updateMenuBlurIfNecessary()
@@ -214,7 +215,7 @@ open class SideMenuManager: NSObject {
 
         guard let forMenu = forMenu,
             let menuBlurEffectStyle = menuBlurEffectStyle,
-            let view = forMenu.visibleViewController?.view, !UIAccessibilityIsReduceTransparencyEnabled() else {
+            let view = forMenu.visibleViewController?.view, !UIAccessibility.isReduceTransparencyEnabled else {
                 return
         }
 
